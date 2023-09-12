@@ -1,6 +1,10 @@
 package dat;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.constant.Constable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -44,12 +48,47 @@ public class Ex3 {
         };
 
         //Function
-        Function<List<Employee>>
+        Function<List<Employee>, List<String>> function = employees-> {
+            List<String> nameList = new ArrayList<>();
+            for (Employee employee : employees) {
+                nameList.add(employee.getName());
+            }
+            return nameList;
+        };
+
+        //Predicate
+        Predicate<Employee> ageCheck = employee -> {
+            if(employee.getAge() > 18){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+
+        //consumer
+        List<String> employees = new ArrayList<>();
+        employees = List.of(new String[]{"Lars", "Peter", "Mads"});
+        List<String> finalEmployees = employees;
+        Consumer<List<String>> writeFile = x -> {
+            try {
+                writeToFile(finalEmployees);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
 
 
 
     }
 
-
+    static void writeToFile(List<String> employees) throws IOException {
+        FileWriter fileWriter = new FileWriter("newfile.txt");
+        BufferedWriter writer = new BufferedWriter(fileWriter);
+        for (String e : employees) {
+            writer.write(e);
+        }
+        writer.close();
+    }
 
 }
